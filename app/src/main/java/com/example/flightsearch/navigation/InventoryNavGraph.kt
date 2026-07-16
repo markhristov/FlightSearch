@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.example.inventory.ui.navigation
+package com.example.flightsearch.navigation
 
-import android.R.attr.type
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -24,14 +23,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.inventory.ui.home.HomeDestination
-import com.example.inventory.ui.home.HomeScreen
-import com.example.inventory.ui.item.ItemDetailsDestination
-import com.example.inventory.ui.item.ItemDetailsScreen
-import com.example.inventory.ui.item.ItemEditDestination
-import com.example.inventory.ui.item.ItemEditScreen
-import com.example.inventory.ui.item.ItemEntryDestination
-import com.example.inventory.ui.item.ItemEntryScreen
+import com.example.flightsearch.ui.home.HomeDestination
+import com.example.flightsearch.ui.home.HomeScreen
 
 /**
  * Provides Navigation graph for the application.

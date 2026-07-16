@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.inventory.ui.navigation.InventoryNavHost
+import com.example.flightsearch.navigation.InventoryNavHost
 
 @Composable
 fun FlightsApp(navController: NavHostController = rememberNavController()) {
@@ -23,25 +23,11 @@ fun FlightsApp(navController: NavHostController = rememberNavController()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InventoryTopAppBar(
-    title: String,
-    canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    navigateUp: () -> Unit = {}
+    title: String = "Flight Search",
 ) {
     CenterAlignedTopAppBar(
         title = { Text(title) },
         modifier = modifier,
-        scrollBehavior = scrollBehavior,
-        navigationIcon = {
-            if (canNavigateBack) {
-                IconButton(onClick = navigateUp) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button)
-                    )
-                }
-            }
-        }
     )
 }
