@@ -1,23 +1,27 @@
 package com.example.flightsearch
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.flightsearch.navigation.InventoryNavHost
+import com.example.flightsearch.ui.home.FavoritesScreen
+import com.example.flightsearch.ui.home.SearchResultsScreen
 
 @Composable
-fun FlightsApp(navController: NavHostController = rememberNavController()) {
-    InventoryNavHost(navController = navController)
+fun FlightsApp(
+
+) {
+    val searchBarEmpty = true
+    Scaffold(
+        topBar = { InventoryTopAppBar() }) { paddingValues ->
+        if (searchBarEmpty) {
+            FavoritesScreen(paddingValues = paddingValues)
+        } else {
+            SearchResultsScreen(paddingValues = paddingValues)
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
