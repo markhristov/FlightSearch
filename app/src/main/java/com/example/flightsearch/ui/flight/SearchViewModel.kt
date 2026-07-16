@@ -1,38 +1,59 @@
 package com.example.flightsearch.ui.flight
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.flightsearch.FlightsApplication
 import com.example.flightsearch.data.Airport
 import com.example.flightsearch.data.AirportRepository
 import com.example.flightsearch.data.FavoritesRepository
-import androidx.lifecycle.viewModelScope
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 
 class SearchViewModel(
     private val airportRepository: AirportRepository,
     private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
-    var flightsUiState by mutableStateOf(FlightSearchUiState())
-        private set
+    private var _flightsUiState = MutableStateFlow(FlightSearchUiState())
+    val flightsUiState = _flightsUiState.asStateFlow()
 
-    fun changeQuery(newQuery: String) {
-        flightsUiState = flightsUiState.copy(
-            query = newQuery
-        )
+    fun search(query: String) {
+        viewModelScope.launch {
+            combine(
+                airportRepository.getAirportWithCode(query),
+                airportRepository.getAirportWithName(query)
+            ) { byCode, byName ->
+                (byCode + byName).distinctBy { it.id }
+            }.collect { airports ->
+                _flightsUiState.update {
+                    it.copy(
+                        query = query,
+                        airports = airports
+                    )
+                }
+            }
+        }
     }
 
-    suspend fun searchQuery(query: String): List<Airport> {
-        val airportsByCode = airportRepository.getAirportWithCode(query)
-        val airportsByName = airportRepository.getAirportWithName(query)
+    companion object{
+        val Factory = viewModelFactory {
 
-        return airportsByCode + airportsByName
+            initializer {
+                val application = this[APPLICATION_KEY] as FlightsApplication
+                SearchViewModel(
+                    application.container.airportRepository,
+                    application.container.favoriteRepository
+                )
+            }
+        }
     }
 
-    fun queryBlank() : Boolean {
-        return flightsUiState.query.isBlank()
-    }
 }
 
 

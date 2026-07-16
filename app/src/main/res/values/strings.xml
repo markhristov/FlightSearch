@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Flight Search</string>
     <string name="back_button">Back</string>
+    <string name="search_airports">Search airports</string>
 </resources>
