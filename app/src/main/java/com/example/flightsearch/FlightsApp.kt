@@ -17,7 +17,7 @@ fun FlightsApp(
     Scaffold(
         topBar = { InventoryTopAppBar() }) { paddingValues ->
         if (searchBarEmpty) {
-            FavoritesScreen(paddingValues = paddingValues)
+            FavoritesScreen(listOf(), paddingValues = paddingValues)
         } else {
             SearchResultsScreen(paddingValues = paddingValues)
         }
