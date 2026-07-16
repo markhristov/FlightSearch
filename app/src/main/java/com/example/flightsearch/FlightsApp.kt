@@ -19,7 +19,7 @@ fun FlightsApp(
         if (searchBarEmpty) {
             FavoritesScreen(listOf(), paddingValues = paddingValues)
         } else {
-            SearchResultsScreen(paddingValues = paddingValues)
+            SearchResultsScreen(listOf(), paddingValues = paddingValues)
         }
     }
 }
