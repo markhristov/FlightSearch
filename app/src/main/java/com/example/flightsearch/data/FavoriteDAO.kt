@@ -20,4 +20,14 @@ interface FavoriteDAO {
 
     @Query(value = "SELECT * FROM favorite")
     fun getFavorites(): Flow<List<Favorite>>
+
+    @Query("""
+    DELETE FROM favorite
+    WHERE departure_code = :departure
+      AND destination_code = :destination
+""")
+    suspend fun deleteByCodes(
+        departure: String,
+        destination: String
+    )
 }

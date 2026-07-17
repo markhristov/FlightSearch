@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -35,7 +36,7 @@ fun FlightsScreen(flights: List<Flight>, onStarClick: (Flight) -> Unit,
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items(flights) { flight ->
             FavoriteCard(
-                favoriteFlight = flight,
+                flight = flight,
                 onStarClick = onStarClick,
                 modifier = modifier.fillMaxWidth()
             )
@@ -65,7 +66,7 @@ fun FlightResultsScreen(
 
 @Composable
 fun FavoriteCard(
-    favoriteFlight: Flight,
+    flight: Flight,
     modifier: Modifier = Modifier,
     onStarClick: (Flight) -> Unit
 ) {
@@ -77,13 +78,13 @@ fun FavoriteCard(
                 .weight(1f)
                 .padding(horizontal = 16.dp, vertical = 8.dp)) {
                 FlightInfo(
-                    airport = favoriteFlight.origin,
+                    airport = flight.origin,
                     true,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
 
                 FlightInfo(
-                    airport = favoriteFlight.destination,
+                    airport = flight.destination,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
 
@@ -92,14 +93,14 @@ fun FavoriteCard(
                 modifier = Modifier
                     .size(64.dp)
                     .padding(end = 16.dp)
-                    .clickable(onClick = {onStarClick(favoriteFlight)}),
+                    .clickable(onClick = {onStarClick(flight)}),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Star,
+                    imageVector = if (flight.starred) Icons.Filled.Star else Icons.Outlined.Star,
                     contentDescription = "star",
                     modifier = Modifier.size(32.dp),
-                    tint = Color(0xFFFFA000)
+                    tint =  if (flight.starred) Color(0xFFFFA000) else Color(0xFFFFFFFF)
                 )
             }
         }

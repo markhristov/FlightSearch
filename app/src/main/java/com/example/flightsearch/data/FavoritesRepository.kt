@@ -10,4 +10,6 @@ interface FavoritesRepository {
     suspend fun delete(favorite: Favorite)
 
     fun getAllFavorites(): Flow<List<Favorite>>
+
+    suspend fun deleteByCodes(departure: String, destination: String)
 }

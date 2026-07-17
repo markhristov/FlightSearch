@@ -47,14 +47,13 @@ fun FlightsApp(
                 },
             )
             val favorites by viewModel.favoriteFlights.collectAsState()
-            val content = uiState.content
-            when (content){
+            when (val content = uiState.content){
                 is SearchContent.Favorites ->
-                    FavoritesScreen(favorites ,{})
+                    FavoritesScreen(favorites ,{viewModel.removeFromFavorites(it)})
                 is SearchContent.AirportResults ->
-                    AirportResultsScreen(content.airports, {})
+                    AirportResultsScreen(content.airports, {viewModel.selectAirport(it)})
                 is SearchContent.FlightResults ->
-                    FlightResultsScreen(content.origin, content.destinations, {})
+                    FlightResultsScreen(content.origin, content.destinations, {viewModel.addToFavorites(it)})
             }
         }
     }
