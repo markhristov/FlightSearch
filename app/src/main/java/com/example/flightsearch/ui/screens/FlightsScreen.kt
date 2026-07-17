@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -98,9 +99,9 @@ fun FavoriteCard(
             ) {
                 Icon(
                     imageVector = if (flight.starred) Icons.Filled.Star else Icons.Outlined.Star,
-                    contentDescription = "star",
+                    contentDescription = if (flight.starred) "Remove from favorites" else "Add to favorites" ,
                     modifier = Modifier.size(32.dp),
-                    tint =  if (flight.starred) Color(0xFFFFA000) else Color(0xFFFFFFFF)
+                    tint =  if (flight.starred) Color(0xFFFFA000) else LocalContentColor.current
                 )
             }
         }
