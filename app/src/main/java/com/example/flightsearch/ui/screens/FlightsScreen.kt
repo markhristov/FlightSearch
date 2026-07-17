@@ -56,11 +56,19 @@ fun FavoritesScreen(flights: List<Flight>, onStarClick: (Flight) -> Unit,
 fun FlightResultsScreen(
     origin: Airport,
     destinations: List<Airport>,
+    favorites: List<Flight>,
     onStarClick: (Flight) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val favoriteRoutes = favorites.map { favorite ->
+        favorite.origin.iataCode to favorite.destination.iataCode
+    }.toSet()
     val flights = destinations.map { destination ->
-        Flight(origin = origin, destination = destination)
+        Flight(
+            origin = origin,
+            destination = destination,
+            starred = origin.iataCode to destination.iataCode in favoriteRoutes
+        )
     }
     FlightsScreen(flights, onStarClick, modifier)
 }

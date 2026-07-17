@@ -53,7 +53,18 @@ fun FlightsApp(
                 is SearchContent.AirportResults ->
                     AirportResultsScreen(content.airports, {viewModel.selectAirport(it)})
                 is SearchContent.FlightResults ->
-                    FlightResultsScreen(content.origin, content.destinations, {viewModel.addToFavorites(it)})
+                    FlightResultsScreen(
+                        origin = content.origin,
+                        destinations = content.destinations,
+                        favorites = favorites,
+                        onStarClick = {
+                            if (it.starred) {
+                                viewModel.removeFromFavorites(it)
+                            } else {
+                                viewModel.addToFavorites(it)
+                            }
+                        }
+                    )
             }
         }
     }
