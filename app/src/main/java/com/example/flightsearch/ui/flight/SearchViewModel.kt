@@ -10,6 +10,7 @@ import com.example.flightsearch.data.Airport
 import com.example.flightsearch.data.AirportRepository
 import com.example.flightsearch.data.Favorite
 import com.example.flightsearch.data.FavoritesRepository
+import com.example.flightsearch.data.local.UserPreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,10 +24,11 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val airportRepository: AirportRepository,
-    private val favoritesRepository: FavoritesRepository
+    private val favoritesRepository: FavoritesRepository,
+    private val  userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private var _flightsUiState = MutableStateFlow(FlightSearchUiState())
-    val flightsUiState = _flightsUiState.asStateFlow()
+    val flightsUiState: StateFlow<FlightSearchUiState> = _flightsUiState.asStateFlow()
     val favoriteFlights: StateFlow<List<Flight>> = combine(
         favoritesRepository.getAllFavorites(), airportRepository.getAllAirports()
     ) { favorites, airports ->
@@ -53,9 +55,23 @@ class SearchViewModel(
         initialValue = emptyList()
     )
 
+    init {
+        viewModelScope.launch {
+            userPreferencesRepository.currentQuery.collect { query ->
+                _flightsUiState.update {
+                    it.copy(query = query)
+                }
+                search(query)
+            }
+        }
+    }
+
     fun updateQuery(query: String) {
         _flightsUiState.update {
             it.copy(query = query)
+        }
+        viewModelScope.launch {
+            userPreferencesRepository.saveLayoutPreference(query)
         }
     }
 
@@ -128,7 +144,8 @@ class SearchViewModel(
                 val application = this[APPLICATION_KEY] as FlightsApplication
                 SearchViewModel(
                     application.container.airportRepository,
-                    application.container.favoriteRepository
+                    application.container.favoriteRepository,
+                    application.container.userPreferencesRepository
                 )
             }
         }
