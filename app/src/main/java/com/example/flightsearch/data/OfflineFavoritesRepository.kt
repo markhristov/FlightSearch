@@ -14,6 +14,6 @@ class OfflineFavoritesRepository(
     override suspend fun delete(favorite: Favorite) =
         favoriteDAO.delete(favorite)
 
-    override fun getFavorites(): Flow<List<Favorite>> =
+    override fun getAllFavorites(): Flow<List<Favorite>> =
         favoriteDAO.getFavorites()
 }

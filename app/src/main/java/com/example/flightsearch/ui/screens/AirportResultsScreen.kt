@@ -20,7 +20,7 @@ import com.example.flightsearch.data.Airport
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable
-fun SearchResultsScreen(
+fun AirportResultsScreen(
     airports: List<Airport>,
     onCardClick: (Airport) -> Unit,
     modifier: Modifier = Modifier,
@@ -55,7 +55,7 @@ fun AirportCard(airport: Airport, onCardClick: (Airport) -> Unit, modifier: Modi
 @Preview(showBackground = true,  backgroundColor = 0xFFFFFFFF
 )
 @Composable
-fun SearchResultsScreenPreview() {
+fun AirportResultsScreenPreview() {
     FlightSearchTheme {
         val airports = listOf(
             Airport(
@@ -82,6 +82,6 @@ fun SearchResultsScreenPreview() {
                 name = "Charles de Gaulle Airport",
                 passengers = 67_000_000
             ))
-        SearchResultsScreen(airports, {})
+        AirportResultsScreen(airports, {})
     }
 }

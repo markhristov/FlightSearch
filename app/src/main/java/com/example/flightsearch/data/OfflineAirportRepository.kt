@@ -10,4 +10,7 @@ class OfflineAirportRepository(
 
     override fun getAirportWithName(name: String): Flow<List<Airport>> =
         airportDAO.getAirportWithName(name)
+
+    override fun getAllAirports(): Flow<List<Airport>> =
+        airportDAO.getAllAirports()
 }

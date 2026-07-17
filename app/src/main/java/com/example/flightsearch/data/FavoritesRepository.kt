@@ -9,5 +9,5 @@ interface FavoritesRepository {
 
     suspend fun delete(favorite: Favorite)
 
-    fun getFavorites(): Flow<List<Favorite>>
+    fun getAllFavorites(): Flow<List<Favorite>>
 }

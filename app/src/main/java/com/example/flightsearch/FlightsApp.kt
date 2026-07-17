@@ -20,9 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.ui.flight.FlightSearchUiState
+import com.example.flightsearch.ui.flight.SearchContent
 import com.example.flightsearch.ui.flight.SearchViewModel
+import com.example.flightsearch.ui.screens.AirportResultsScreen
 import com.example.flightsearch.ui.screens.FavoritesScreen
-import com.example.flightsearch.ui.screens.SearchResultsScreen
+import com.example.flightsearch.ui.screens.FlightResultsScreen
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable
@@ -44,14 +46,20 @@ fun FlightsApp(
                     viewModel.search(it)
                 },
             )
-            if (uiState.query.isEmpty()) {
-                FavoritesScreen(uiState.favorites ,{})
-            } else {
-                SearchResultsScreen(uiState.airports, onCardClick = {})
+            val favorites by viewModel.favoriteFlights.collectAsState()
+            val content = uiState.content
+            when (content){
+                is SearchContent.Favorites ->
+                    FavoritesScreen(favorites ,{})
+                is SearchContent.AirportResults ->
+                    AirportResultsScreen(content.airports, {})
+                is SearchContent.FlightResults ->
+                    FlightResultsScreen(content.origin, content.destinations, {})
             }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

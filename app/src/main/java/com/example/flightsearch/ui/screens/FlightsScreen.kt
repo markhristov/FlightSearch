@@ -29,21 +29,38 @@ import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 
 @Composable
-fun FavoritesScreen(
-    favoriteItems: List<Flight>,
-    onStarClick: (Flight) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun FlightsScreen(flights: List<Flight>, onStarClick: (Flight) -> Unit,
+                   modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        items(favoriteItems) { favorite ->
+        items(flights) { flight ->
             FavoriteCard(
-                favoriteFlight = favorite,
+                favoriteFlight = flight,
                 onStarClick = onStarClick,
                 modifier = modifier.fillMaxWidth()
             )
         }
     }
+}
+
+@Composable
+fun FavoritesScreen(flights: List<Flight>, onStarClick: (Flight) -> Unit,
+                    modifier: Modifier = Modifier) {
+    FlightsScreen(flights, onStarClick, modifier)
+}
+
+
+@Composable
+fun FlightResultsScreen(
+    origin: Airport,
+    destinations: List<Airport>,
+    onStarClick: (Flight) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val flights = destinations.map { destination ->
+        Flight(origin = origin, destination = destination)
+    }
+    FlightsScreen(flights, onStarClick, modifier)
 }
 
 @Composable
@@ -60,7 +77,7 @@ fun FavoriteCard(
                 .weight(1f)
                 .padding(horizontal = 16.dp, vertical = 8.dp)) {
                 FlightInfo(
-                    airport = favoriteFlight.source,
+                    airport = favoriteFlight.origin,
                     true,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -110,7 +127,7 @@ fun FlightsScreenPreview() {
     FlightSearchTheme() {
         val favoriteItems = listOf(
             Flight(
-                source = Airport(
+                origin = Airport(
                     id = 1,
                     iataCode = "JFK",
                     name = "John F. Kennedy International Airport",
@@ -124,7 +141,7 @@ fun FlightsScreenPreview() {
                 )
             ),
             Flight(
-                source = Airport(
+                origin = Airport(
                     id = 3,
                     iataCode = "LHR",
                     name = "London Heathrow Airport",
@@ -138,7 +155,7 @@ fun FlightsScreenPreview() {
                 )
             ),
             Flight(
-                source = Airport(
+                origin = Airport(
                     id = 5,
                     iataCode = "NRT",
                     name = "Narita International Airport",
@@ -152,6 +169,6 @@ fun FlightsScreenPreview() {
                 )
             )
         )
-        FavoritesScreen(favoriteItems, {})
+        FlightsScreen(favoriteItems, {})
     }
 }
