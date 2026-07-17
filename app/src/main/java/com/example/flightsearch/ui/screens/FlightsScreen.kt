@@ -1,5 +1,7 @@
 package com.example.flightsearch.ui.screens
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,11 +37,21 @@ fun FlightsScreen(flights: List<Flight>, onStarClick: (Flight) -> Unit,
                    modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        items(flights) { flight ->
+        items(
+            items = flights,
+            key = { flight -> "${flight.origin.iataCode}-${flight.destination.iataCode}" }
+        ) { flight ->
             FavoriteCard(
                 flight = flight,
                 onStarClick = onStarClick,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItem(
+                        placementSpec = spring(
+                            dampingRatio = Spring.DampingRatioNoBouncy,
+                            stiffness = Spring.StiffnessMediumLow
+                        )
+                    )
             )
         }
     }
