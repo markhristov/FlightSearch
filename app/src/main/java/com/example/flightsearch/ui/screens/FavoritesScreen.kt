@@ -1,9 +1,9 @@
-package com.example.flightsearch.ui.home
+package com.example.flightsearch.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,30 +24,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.flightsearch.data.Airport
-import com.example.flightsearch.ui.flight.FavoriteFlights
+import com.example.flightsearch.ui.flight.Flight
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 
 @Composable
 fun FavoritesScreen(
-    favoriteItems: List<FavoriteFlights>,
+    favoriteItems: List<Flight>,
+    onStarClick: (Flight) -> Unit,
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues()
 ) {
-    LazyColumn(modifier = modifier.padding(paddingValues),
+    LazyColumn(modifier = modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items(favoriteItems) { favorite ->
             FavoriteCard(
-                favorite,
-                modifier.fillMaxWidth()
-
+                favoriteFlight = favorite,
+                onStarClick = onStarClick,
+                modifier = modifier.fillMaxWidth()
             )
         }
     }
 }
 
 @Composable
-fun FavoriteCard(favoriteFlight: FavoriteFlights, modifier: Modifier = Modifier) {
+fun FavoriteCard(
+    favoriteFlight: Flight,
+    modifier: Modifier = Modifier,
+    onStarClick: (Flight) -> Unit
+) {
     Card(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -70,7 +74,8 @@ fun FavoriteCard(favoriteFlight: FavoriteFlights, modifier: Modifier = Modifier)
             Box(
                 modifier = Modifier
                     .size(64.dp)
-                    .padding(end = 16.dp),
+                    .padding(end = 16.dp)
+                    .clickable(onClick = {onStarClick(favoriteFlight)}),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -104,7 +109,7 @@ fun FlightInfo(airport: Airport, source: Boolean = false, modifier: Modifier) {
 fun FlightsScreenPreview() {
     FlightSearchTheme() {
         val favoriteItems = listOf(
-            FavoriteFlights(
+            Flight(
                 source = Airport(
                     id = 1,
                     iataCode = "JFK",
@@ -118,7 +123,7 @@ fun FlightsScreenPreview() {
                     passengers = 75_000_000
                 )
             ),
-            FavoriteFlights(
+            Flight(
                 source = Airport(
                     id = 3,
                     iataCode = "LHR",
@@ -132,7 +137,7 @@ fun FlightsScreenPreview() {
                     passengers = 67_000_000
                 )
             ),
-            FavoriteFlights(
+            Flight(
                 source = Airport(
                     id = 5,
                     iataCode = "NRT",
@@ -147,6 +152,6 @@ fun FlightsScreenPreview() {
                 )
             )
         )
-        FavoritesScreen(favoriteItems)
+        FavoritesScreen(favoriteItems, {})
     }
 }

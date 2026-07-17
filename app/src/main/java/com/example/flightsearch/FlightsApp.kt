@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.ui.flight.FlightSearchUiState
 import com.example.flightsearch.ui.flight.SearchViewModel
-import com.example.flightsearch.ui.home.FavoritesScreen
-import com.example.flightsearch.ui.home.SearchResultsScreen
+import com.example.flightsearch.ui.screens.FavoritesScreen
+import com.example.flightsearch.ui.screens.SearchResultsScreen
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable
@@ -36,6 +36,7 @@ fun FlightsApp(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .padding(16.dp)
         ) {
             FlightsSearchBar(
                 uiState = uiState,
@@ -44,9 +45,9 @@ fun FlightsApp(
                 },
             )
             if (uiState.query.isEmpty()) {
-                FavoritesScreen(listOf())
+                FavoritesScreen(uiState.favorites ,{})
             } else {
-                SearchResultsScreen(listOf())
+                SearchResultsScreen(uiState.airports, onCardClick = {})
             }
         }
     }

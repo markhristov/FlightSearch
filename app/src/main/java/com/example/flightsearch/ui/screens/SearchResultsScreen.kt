@@ -1,7 +1,7 @@
-package com.example.flightsearch.ui.home
+package com.example.flightsearch.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,14 +22,15 @@ import com.example.flightsearch.ui.theme.FlightSearchTheme
 @Composable
 fun SearchResultsScreen(
     airports: List<Airport>,
+    onCardClick: (Airport) -> Unit,
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues()
 ) {
-    LazyColumn(modifier = modifier.padding(paddingValues),
+    LazyColumn(modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)) {
         items(airports) { airport ->
             AirportCard(
                 airport,
+                onCardClick = onCardClick,
                 modifier.fillMaxWidth()
             )
         }
@@ -38,8 +38,8 @@ fun SearchResultsScreen(
 }
 
 @Composable
-fun AirportCard(airport: Airport, modifier: Modifier = Modifier) {
-    Row(modifier = modifier,
+fun AirportCard(airport: Airport, onCardClick: (Airport) -> Unit, modifier: Modifier = Modifier) {
+    Row(modifier = modifier.clickable(onClick = {onCardClick(airport)}),
         verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = airport.iataCode,
@@ -82,6 +82,6 @@ fun SearchResultsScreenPreview() {
                 name = "Charles de Gaulle Airport",
                 passengers = 67_000_000
             ))
-        SearchResultsScreen(airports)
+        SearchResultsScreen(airports, {})
     }
 }

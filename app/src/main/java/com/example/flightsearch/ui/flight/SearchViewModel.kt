@@ -60,5 +60,5 @@ class SearchViewModel(
 data class FlightSearchUiState(
     val query: String = "",
     val airports: List<Airport> = emptyList(),
-    val favorites: List<FavoriteFlights> = emptyList()
+    val favorites: List<Flight> = emptyList()
 )
